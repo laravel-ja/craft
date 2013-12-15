@@ -18,8 +18,9 @@ class NewCommand extends BaseCommand {
 	protected function configure()
 	{
 		$this->setName('new')
-			 ->setDescription('Create a new Laravel application')
-			 ->addArgument('name', InputArgument::REQUIRED, 'The name of the application');
+			 ->setDescription('Laravelアプリケーション作成')
+			 ->addArgument('name', InputArgument::REQUIRED, 'The name of the application')
+             ->addOption( 'set-mode', 's', InputOption::VALUE_NONE, 'ストレージのパーミッション設定', null);
 	}
 
 	/**
@@ -33,17 +34,17 @@ class NewCommand extends BaseCommand {
 
 		if (is_dir($directory))
 		{
-			$output->writeln('<error>Application already exists!</error>'); exit(1);
+			$output->writeln('<error>既にアプリケーションのフォルダーが存在します。</error>'); exit(1);
 		}
 
-		$output->writeln('<info>Crafting application...</info>');
+		$output->writeln('<info>作成中…</info>');
 
 		// Creaqte the ZIP file name...
 		$zipFile = getcwd().'/laravel_'.md5(time().uniqid()).'.zip';
 
 		// Download the latest Laravel archive...
 		$client = new HttpClient;
-		$client->get('http://192.241.224.13/laravel-craft.zip')->setResponseBody($zipFile)->send();
+		$client->get('http://kore1server.com/laravel-craft.zip')->setResponseBody($zipFile)->send();
 
 		// Create the application directory...
 		mkdir($directory);
@@ -58,7 +59,31 @@ class NewCommand extends BaseCommand {
 		@chmod($zipFile, 0777);
 		@unlink($zipFile);
 
-		$output->writeln('<comment>Application ready! Build something amazing.</comment>');
+        // Set permissions to directories under app/storage directory.
+        if ($input->getOption( 'set-mode'))
+        {
+            @chmod(rtrim($directory, '/').'/app/storage/cache', 0757);
+            @chmod(rtrim($directory, '/').'/app/storage/logs', 0757);
+            @chmod(rtrim($directory, '/').'/app/storage/meta', 0757);
+            @chmod(rtrim($directory, '/').'/app/storage/sessions', 0757);
+            @chmod(rtrim($directory, '/').'/app/storage/views', 0757);
+            $output->writeln('<comment>app/storage下のディレクトリーのパーミッションを0757に設定しました。</comment>');
+        }
+
+        // Execute key generation command.
+        $generateCommand = 'php '.rtrim($directory, '/').'/artisan key:generate';
+        exec($generateCommand, $stdout, $return);
+        if ($return != 0)
+        {
+            $output->writeln("<error>'php artisan key:generate'コマンドが実行できませんでした。</error>");
+            $output->writeln($stdout);
+        }
+        else
+        {
+            $output->writeln('<comment>アプリケーションキーを生成しました。</comment>');
+        }
+
+		$output->writeln('<comment>準備完了！どうぞ、すごいものを作って下さい。</comment>');
 	}
 
 }

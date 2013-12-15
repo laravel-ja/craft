@@ -16,6 +16,6 @@
         }
     ],
     "main": "bin/craft",
-    "output": "laravel.phar",
+    "output": "laravelja.phar",
     "stub": true
 }
