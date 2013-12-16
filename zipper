@@ -1,7 +1,18 @@
+#!/bin/bash
+
 wget https://github.com/laravel-ja/laravel/archive/master.zip
 unzip master.zip -d working
 cd working/laravel-master
 composer install --no-interaction
+
+if [$? .ne. 0]
+then
+    cd ../..
+    mv working faild-working
+    rm master.zip
+    exit 1
+fi
+
 zip -r ../../laravel-craft.zip *
 cd ../..
 mv laravel-craft.zip public/laravel-craft.zip
