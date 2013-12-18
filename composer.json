@@ -13,8 +13,12 @@
     },
     "require": {
         "illuminate/support": "4.1.*",
+        "illuminate/filesystem": "4.1.*",
         "guzzle/guzzle": "3.7.*",
         "symfony/console": "2.4.*"
+    },
+    "require-dev": {
+        "phpunit/phpunit": "dev-master"
     },
     "config": {
         "bin-dir": "bin",
