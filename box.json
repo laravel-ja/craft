@@ -1,6 +1,6 @@
 {
     "chmod": "0755",
-    "directories": ["src"],
+    "directories": ["src","lang"],
     "finder": [
         {
             "name": "*.php",
