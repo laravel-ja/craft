@@ -13,8 +13,10 @@ return array(
     'RemoveComments' => 'Remove all comments from files on config/lang directories.',
     'KeyGenerated' => 'Application key have been generated.',
     'ComplitedInstall' => 'Application ready! Build something amazing.',
+    'Minified' => 'Removed all comments from PHP files without vendor. Also removed md files.',
 
     // Error Messages
     'FaildToFetch' => 'Faild to fetch ZIP file!',
     'FaildToGenerateKey' => 'Faild to generate new application key.',
+    'DuplicateRemoveOptions' => 'Specify only --minify or --remove-comments.',
 );

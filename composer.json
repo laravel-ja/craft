@@ -9,7 +9,10 @@
         }
     ],
     "autoload": {
-        "classmap": ["src/lib/"]
+        "classmap": [
+            "src/lib/",
+            "tests/"
+            ]
     },
     "require": {
         "illuminate/support": "4.1.*",
@@ -18,7 +21,8 @@
         "symfony/console": "2.4.*"
     },
     "require-dev": {
-        "phpunit/phpunit": "dev-master"
+        "phpunit/phpunit": "3.7.*",
+        "mockery/mockery": "dev-master"
     },
     "config": {
         "bin-dir": "bin",

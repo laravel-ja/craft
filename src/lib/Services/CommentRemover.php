@@ -18,11 +18,9 @@ class CommentRemover
         $this->file = $file ? : new Filesystem;
     }
 
-    public function removeFromFiles( $directoryPath )
+    public function removeFromFiles( $directory )
     {
-        $files = $this->file->allFiles( $directoryPath );
-
-        foreach( $files as $file )
+        foreach( $this->globAll( $directory, '*.php' ) as $file )
         {
             $this->remove( $file );
         }
@@ -33,18 +31,32 @@ class CommentRemover
         $content = $this->file->get( $filePath );
 
         // Delete line comments.
-        $noLineComment = preg_replace( '/^\/\/.*/', '', $content );
+        $noLineComment = preg_replace( '#^\s*//.*$#m', "", $content );
 
         // Delete block comments.
-        $noBlockComment = preg_replace( '/\/\*.+\*\//sU', '', $noLineComment );
-
-        // Delete PHPDoc format comments.
-        $noDocComment = preg_replace( '/\/\*\*.+\*\//sU', '', $noBlockComment );
+        $noBlockComment = preg_replace( '#/\*.+\*/#sU', '', $noLineComment );
 
         // Delete Space lines.
-        $noSpaceLine = preg_replace( '/\n\s*\n/', "\n", $noDocComment );
+        $noSpaceLine = preg_replace( '/^\s*\n/m', '', $noBlockComment );
 
-        $this->file->put( $filePath, $noSpaceLine );
+        // Put an empty line to the tail.
+        $addedEmptyLine = rtrim( $noSpaceLine, "\n" )."\n";
+
+        $this->file->put( $filePath, $addedEmptyLine );
+    }
+
+    private function globAll( $path, $pattern )
+    {
+        $paths = $this->file->glob( rtrim( $path, '/' ).'/*',
+                                           GLOB_MARK | GLOB_ONLYDIR | GLOB_NOSORT );
+        $files = $this->file->glob( rtrim( $path, '/' ).'/'.$pattern );
+
+        foreach( $paths as $path )
+        {
+            $files = array_merge( $files, $this->globAll( $path, $pattern ) );
+        }
+
+        return $files;
     }
 
 }

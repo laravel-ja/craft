@@ -18,6 +18,11 @@ use Laravel\Services\CommandExecutor;
 
 class NewCommand extends BaseCommand
 {
+    /**
+     *
+     * @var Filesystem
+     */
+    private $file;
 
     public function __construct( $name = null, $file = null, $validator = null,
                                  $trans = null, $remover = null, $setter = null,
@@ -47,6 +52,8 @@ class NewCommand extends BaseCommand
                          'Display language, also set Zip file if avilable.', 'en' )
             ->addOption( 'remove-comments', 'r', InputOption::VALUE_NONE,
                          'Remove comments from config and language files.', null )
+            ->addOption( 'minify', 'm', InputOption::VALUE_NONE,
+                         'Remove md files and comments from PHP files.' )
             ->addOption( 'from', 'f', InputOption::VALUE_OPTIONAL,
                          'Specify Zip file to fech.', null )
             ->addOption( 'set-mode', 's', InputOption::VALUE_NONE,
@@ -107,7 +114,7 @@ class NewCommand extends BaseCommand
         {
             // Delete the Laravel archive...
             $this->setter->setMode( $zipFile, 0777 );
-            @unlink( $zipFile );
+            $this->file->delete( $zipFile );
 
             $output->writeln( '<error>'.$this
                 ->trans->get( 'FaildToFetch' ).'</error>' );
@@ -115,7 +122,7 @@ class NewCommand extends BaseCommand
         }
 
         // Create the application directory...
-        mkdir( $directory );
+        $this->file->makeDirectory( $directory );
 
         // Unzip the Laravel archive into the application directory...
         $archive = new ZipArchive;
@@ -127,12 +134,12 @@ class NewCommand extends BaseCommand
         else
         {
             $output->writeln( $this->trans->get( 'FaildToOpenZipFie', $lang ) );
-            @unlink( $directory );
+            $this->file->deleteDirectory( $directory );
         }
 
         // Delete the Laravel archive...
         $this->setter->setMode( $zipFile, 0777 );
-        @unlink( $zipFile );
+        $this->file->delete( $zipFile );
 
         // Set permissions to directories under app/storage directory.
         if( $input->getOption( 'set-mode' ) )
@@ -154,6 +161,26 @@ class NewCommand extends BaseCommand
             $output->writeln( '<comment>'.$this
                 ->trans->get( 'RemoveComments', $lang ).'</comment>' );
         }
+
+        // Minify file system.
+        if( $input->getOption( 'minify' ) )
+        {
+            // Delete md files.
+            foreach( $this->file->glob( $directory.'/*.md' ) as $mdFile )
+            {
+                $this->file->delete( $mdFile );
+            }
+
+            // Delete comments.
+            $this->remover->removeFromFiles( $directory.'/app' );
+            $this->remover->removeFromFiles( $directory.'/bootstrap' );
+            $this->remover->removeFromFiles( $directory.'/public' );
+            $this->remover->remove( $directory.'/artisan' );
+            $this->remover->remove( $directory.'/server.php' );
+
+            $output->writeln( '<comment>'.$this
+                ->trans->get( 'Minified', $lang ).'</comment>' );
+       }
 
         // Execute key generation command.
         $result = $this->executor

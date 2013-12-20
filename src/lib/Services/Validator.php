@@ -9,7 +9,7 @@ class Validator
 {
     /**
      * Laravel Filesystem class
-     * 
+     *
      * @var Filesystem
      */
     private $file;
@@ -28,6 +28,12 @@ class Validator
         if( $this->file->isDirectory( $path ) )
         {
             return $this->trans->get( 'ProjectDirectoryExist', $lang );
+        }
+
+        // Check specifed both --minify and --remove-comments option at once.
+        if( $args['minify'] and $args['remove-comments'] )
+        {
+            return $this->trans->get( 'DuplicateRemoveOptions', $lang );
         }
 
         return '';

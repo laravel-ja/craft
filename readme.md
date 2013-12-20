@@ -31,6 +31,11 @@ To identify using 'laravelja', but you can rename to favored command name.
     laravelja --remove-comments new Install-path
     laravelja -r new Install-path
 
+**Remove comments from PHP files without vendor directory, and remove all md file.
+
+    laravelja -minify new Install-path
+    laravelja -m new Install-path
+
 **Specify zip file**
 
     laravelja new Install-path --from http://example.com/some.zip
@@ -60,11 +65,16 @@ To identify using 'laravelja', but you can rename to favored command name.
 
     laravelja -r new インストールパス
 
+**vendorディレクトリー以外のPHPファイルからコメントを削除し、Markdownファイルを削除する**
+
+    laravelja -minify new Install-path
+    laravelja -m new Install-path
+
 **ベテランさん向け**
 
-日本語の言語ファイル（app/lang/jaを含む）を取り込み、app/storage下のディレクトリーに757をセットし、コメントを削除する。
+日本語の言語ファイル（app/lang/jaを含む）を取り込み、mdファイルを削除、Vendor以外のPHPファイルのコメントを削除する。
 
-    laravelja -l ja -s -r new インストールパス
+    laravelja -l ja -s -m new インストールパス
 
 **ZIPファイルの読み込み先指定**
 
@@ -75,5 +85,5 @@ To identify using 'laravelja', but you can rename to favored command name.
 例：
 
     laravel new new-project -f http://example.com/special.zip
-    
+
 

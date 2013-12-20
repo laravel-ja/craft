@@ -1,16 +1,13 @@
 {
     "chmod": "0755",
-    "directories": ["src","lang"],
+    "directories": ["src/lib","lang"],
     "finder": [
         {
-            "name": "*.php",
+            "name": "*",
             "exclude": [
                 "phpunit",
-                "phpunit-test-case",
-                "Tester",
-                "Tests",
-                "tests",
-                "yaml"
+                "yaml",
+                "mockery"
             ],
             "in": "src/vendor"
         }
