@@ -20,15 +20,35 @@ class Validator
         $this->trans = $trans ? : new Translator;
     }
 
-    public function getErrorMessage( $path, $arguments, $options, $lang )
+    public function validateNewCommand( $path, $arguments, $options, $lang )
     {
-        $args = array_merge( $arguments, $options );
-
         // Check specified project dirctory is already exist.
         if( $this->file->isDirectory( $path ) )
         {
             return $this->trans->get( 'ProjectDirectoryExist', $lang );
         }
+
+        $message = $this->validateCommon( $arguments, $options, $lang );
+
+        return $message;
+    }
+
+    public function validateSetCommand( $path, $arguments, $options, $lang )
+    {
+        // Check specified project dirctory is exist.
+        if( ! $this->file->isDirectory( $path ) )
+        {
+            return $this->trans->get( 'ProjectDirectoryNotExist', $lang );
+        }
+
+        $message = $this->validateCommon( $arguments, $options, $lang );
+
+        return $message;
+    }
+
+    public function validateCommon( $arguments, $options, $lang )
+    {
+        $args = array_merge( $arguments, $options );
 
         // Check specifed both --minify and --remove-comments option at once.
         if( $args['minify'] and $args['remove-comments'] )

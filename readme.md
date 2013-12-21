@@ -18,8 +18,8 @@ To identify using 'laravelja', but you can rename to favored command name.
 
 **Install Japanese version**
 
-    laravelja --lang ja new Install-path
-    laravelja -l ja new Install-path
+    laravelja new Install-path --lang ja
+    laravelja new Install-path-l ja
 
 **Set 757 permission with files on app/storage
 
@@ -45,6 +45,14 @@ To identify using 'laravelja', but you can rename to favored command name.
 
     laravelja -s -r new Install-path
 
+**Option -r -s -m can apllay to existed project folder**
+
+By using set command.
+
+    laravelja -s -r set Exist-Project
+    laravelja -m set Exist-Project
+
+
 ## 日本語版
 
 ### 使い方
@@ -55,7 +63,7 @@ To identify using 'laravelja', but you can rename to favored command name.
 
 **日本語版のインストール**
 
-    laravelja -l ja new インストールパス
+    laravelja new インストールパス -l ja
 
 **757パーミッションをapp/storage下のディレクトリーに付加**
 
@@ -74,16 +82,25 @@ To identify using 'laravelja', but you can rename to favored command name.
 
 日本語の言語ファイル（app/lang/jaを含む）を取り込み、mdファイルを削除、Vendor以外のPHPファイルのコメントを削除する。
 
-    laravelja -l ja -s -m new インストールパス
+    laravelja -s -m new インストールパス -l ja
 
 **ZIPファイルの読み込み先指定**
 
 オリジナルなZIPファイルを指定し、インストールすることも可能です。
 
-    laravel new インストールパス -f ZIPファイル
+    laravelja new インストールパス -f ZIPファイル
 
 例：
 
-    laravel new new-project -f http://example.com/special.zip
+    laravelja new new-project -f http://example.com/special.zip
+
+**既存のプロジェクトに設定**
+
+自前のリポからgit cloneしたり、手元にお気に入りの初期パッケージを持っている場合もあるでしょう。そうした、既存のプロジェクトからコメントを外したりできます。
+
+    laravelja -s -m set 既存のディレクトリー -l ja
+    laravelja -r set 既存のディレクトリー
+
+`-l`オプションはメッセージの言語の指定になります。`-f`オプションは使用できません。
 
 

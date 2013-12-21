@@ -17,6 +17,7 @@
     "require": {
         "illuminate/support": "4.1.*",
         "illuminate/filesystem": "4.1.*",
+        "illuminate/container": "4.1.*",
         "guzzle/guzzle": "3.7.*",
         "symfony/console": "2.4.*"
     },
