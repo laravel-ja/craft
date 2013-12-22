@@ -13,12 +13,12 @@ class Translator
      */
     private $file;
 
-    public function __construct( $file = null )
+    public function __construct( Filesystem $file )
     {
-        $this->file = $file ? : new Filesystem;
+        $this->file = $file;
     }
 
-    public function get( $key, $lang, $replace = array() )
+    public function get( $key, $lang )
     {
         $filePath = __DIR__.'/../../../lang/'.$lang.'/strings.php';
 

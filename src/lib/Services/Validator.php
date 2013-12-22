@@ -14,10 +14,10 @@ class Validator
      */
     private $file;
 
-    public function __construct( $file = null, $trans = null )
+    public function __construct( Filesystem $file, Translator $trans )
     {
-        $this->file = $file ? : new Filesystem;
-        $this->trans = $trans ? : new Translator;
+        $this->file = $file;
+        $this->trans = $trans;
     }
 
     public function validateNewCommand( $path, $arguments, $options, $lang )
@@ -36,7 +36,7 @@ class Validator
     public function validateSetCommand( $path, $arguments, $options, $lang )
     {
         // Check specified project dirctory is exist.
-        if( ! $this->file->isDirectory( $path ) )
+        if( !$this->file->isDirectory( $path ) )
         {
             return $this->trans->get( 'ProjectDirectoryNotExist', $lang );
         }

@@ -13,9 +13,9 @@ class CommentRemover
      */
     private $file;
 
-    public function __construct( $file = null )
+    public function __construct( Filesystem $file)
     {
-        $this->file = $file ? : new Filesystem;
+        $this->file = $file;
     }
 
     public function removeFromFiles( $directory )

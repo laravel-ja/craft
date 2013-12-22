@@ -10,21 +10,48 @@ class CommandExecutor
     {
         $this->output = '';
 
-        exec( $command, $output, $result );
+        $fd = array(
+            1 => array( "pipe", "w" ),
+            2 => array( "pipe", "w" ),
+        );
+        $pipes = array();
 
-        if( $result != 0 )
+        $process = proc_open( $command, $fd, $pipes );
+
+        $this->output = array();
+        $this->errorOutput = array();
+
+        if( is_resource( $process ) )
         {
-            $this->output = $output;
+            // Get stdin.
+            while( !feof( $pipes[1] ) ) $this->output[] = fgets( $pipes[1] );
+            fclose( $pipes[1] );
 
-            return $result;
+            // Delete last 'false' item.
+            array_pop( $this->output );
+
+            // Get stderr.
+            while( !feof( $pipes[2] ) ) $this->errorOutput[] = fgets( $pipes[2] );
+            fclose( $pipes[2] );
+
+            // Delete last 'false' item.
+            array_pop( $this->errorOutput );
+
+            $result = proc_close( $process );
+        }
+        else
+        {
+            // todo : Need internationalize.
+            $this->errorOutput[] = array( 'Faild to Execute : '.$command );
+            return 1;
         }
 
-        return 0;
+        return $result;
     }
 
     public function getMessage()
     {
-        return $this->output;
+        return implode('', array_merge($this->output, $this->errorOutput));
     }
 
 }

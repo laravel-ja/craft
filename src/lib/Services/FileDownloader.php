@@ -10,10 +10,11 @@ class FileDownloader
 {
     private $filename;
 
-    public function __construct( Filesystem $file, ModeSetter $setter )
+    public function __construct( Filesystem $file, ModeSetter $setter, HttpClient $client )
     {
         $this->file = $file;
         $this->setter = $setter;
+        $this->client = $client;
 
         $this->generateTemporaryName();
     }
@@ -21,12 +22,11 @@ class FileDownloader
     public function download( $fetchFile )
     {
         // Download the latest Laravel archive...
-        $client = new HttpClient;
-        try
+         try
         {
-            $client->get( $fetchFile )->setResponseBody( $this->filename )->send();
+            $this->client->get( $fetchFile )->setResponseBody( $this->filename )->send();
         }
-        catch( Exception $e )
+        catch( \Exception $e )
         {
             // Delete the Laravel archive...
             $this->terminate();

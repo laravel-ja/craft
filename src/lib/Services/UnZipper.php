@@ -7,10 +7,16 @@ use Illuminate\Filesystem\Filesystem;
 
 class UnZipper
 {
+    /**
+     *
+     * @var ZipArchive
+     */
+    private $archive;
 
-    public function __construct( Filesystem $file )
+    public function __construct( Filesystem $file, ZipArchive $archive )
     {
         $this->file = $file;
+        $this->archive = $archive;
     }
 
     function unzip( $zipFile, $directory )
@@ -19,11 +25,10 @@ class UnZipper
         $this->file->makeDirectory( $directory );
 
         // Unzip the Laravel archive into the application directory...
-        $archive = new ZipArchive;
-        if( $archive->open( $zipFile ) === TRUE )
+        if( $this->archive->open( $zipFile ) === true )
         {
-            @$archive->extractTo( $directory );
-            $archive->close();
+            @$this->archive->extractTo( $directory );
+            $this->archive->close();
         }
         else
         {
