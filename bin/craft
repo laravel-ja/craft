@@ -5,4 +5,5 @@ require __DIR__.'/../src/vendor/autoload.php';
 $app = new Symfony\Component\Console\Application('Laravel Craft', '1.0.0');
 $app->add(new Laravel\Craft\NewCommand);
 $app->add(new Laravel\Craft\SetCommand);
+$app->add(new Laravel\Craft\SelfupdateCommand);
 $app->run();

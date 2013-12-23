@@ -52,6 +52,10 @@ By using set command.
     laravelja -s -r set Exist-Project
     laravelja -m set Exist-Project
 
+**Self Update**
+
+    laravelja selfupdate
+
 
 ## 日本語版
 
@@ -104,3 +108,9 @@ By using set command.
 `-l`オプションはメッセージの言語の指定になります。`-f`オプションは使用できません。
 
 
+**インストーラーのアップデート**
+
+この日本語版は自分自身をアップデートします。定期的に実行して下さい。（一度機能が落ち着いたら、もう頻繁にアップデートはしません。）
+
+    laravelja selfupdate -l ja
+    

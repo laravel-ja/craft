@@ -12,6 +12,7 @@ class Translator
      * @var Filesystem;
      */
     private $file;
+    private $sentences = array();
 
     public function __construct( Filesystem $file )
     {
@@ -20,18 +21,21 @@ class Translator
 
     public function get( $key, $lang )
     {
-        $filePath = __DIR__.'/../../../lang/'.$lang.'/strings.php';
-
-        if( !$this->file->exists( $filePath ) )
+        if( empty( $this->sentences ) )
         {
-            return $key;
+            $filePath = __DIR__.'/../../../lang/'.$lang.'/strings.php';
+
+            if( !$this->file->exists( $filePath ) )
+            {
+                return $key;
+            }
+
+            $this->sentences = require $filePath;
         }
 
-        $strings = require $filePath;
-
-        if( key_exists( $key, $strings ) )
+        if( key_exists( $key, $this->sentences ) )
         {
-            return $strings[$key];
+            return $this->sentences[$key];
         }
 
         return $key;
