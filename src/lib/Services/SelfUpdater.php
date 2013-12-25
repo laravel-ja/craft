@@ -23,7 +23,7 @@ class SelfUpdater
             ->trans->get( 'StartSelfUpdate', $input->getOption( 'lang' ) ).'</comment>' );
 
         // Feach phar file
-        if( $this->downloader->download( 'http://kore1server.com/laravelja.phar' ) != 0 )
+        if( $this->downloader->download( 'http://laravel4.qanxen.info/laravelja.phar' ) != 0 )
         {
             $output->writeln( '<error>'.$this
                 ->trans->get( 'DownloadUpdataFaild', $input->getOption( 'lang' ) ).'</error>' );

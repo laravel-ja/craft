@@ -24,6 +24,7 @@ class NewCommand extends BaseCommand
         $this->generator = $this->container->make( 'Laravel\Services\KeyGenerator' );
         $this->downloader = $this->container->make( 'Laravel\Services\FileDownloader' );
         $this->unzipper = $this->container->make( 'Laravel\Services\UnZipper' );
+        $this->configsetter = $this->container->make( 'Laravel\Services\ConfigSetter' );
     }
 
     /**
@@ -126,6 +127,28 @@ class NewCommand extends BaseCommand
         {
             return 1;
         }
+
+        // Set config / lang items from ~/.laravel.install.conf.php
+        $result = $this->configsetter->set( $directory );
+
+        if( $result == -1 )
+        {
+            $output->writeln( '<comment>'.$this->trans->get( 'NoConfigSetFile',
+                                                             $input->getOption( 'lang' ) ).'</comment>' );
+        }
+        elseif( $result != 0 )
+        {
+            $output->writeln( '<error>'.$this
+                ->trans->get( 'ConfigSetFaild', $lang ).'</error>' );
+
+            return 1;
+        }
+        else
+        {
+            $output->writeln( '<comment>'.$this
+                ->trans->get( 'ConfigSetSuccessfully', $lang ).'</comment>' );
+        }
+
 
         $output->writeln( '<comment>'.$this
             ->trans->get( 'ComplitedInstall', $lang ).'</comment>' );

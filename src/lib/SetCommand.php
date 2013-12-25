@@ -25,6 +25,8 @@ class SetCommand extends BaseCommand
 
         $this->validator = $this->container->make( 'Laravel\Services\Validator' );
         $this->setupper = $this->container->make( 'Laravel\Services\FilesSetupper' );
+        $this->configsetter = $this->container->make( 'Laravel\Services\ConfigSetter' );
+        $this->trans = $this->container->make( 'Laravel\Services\Translator' );
     }
 
     /**
@@ -72,6 +74,26 @@ class SetCommand extends BaseCommand
         // Remove many things.
         $this->setupper->setupApplication( $input, $output, $directory );
 
+        // Set config / lang items from ~/.laravel.config.php
+        $result = $this->configsetter->set( $directory );
+
+        if( $result == -1 )
+        {
+            $output->writeln( '<comment>'.$this->trans->get( 'NoConfigSetFile',
+                                                             $input->getOption( 'lang' ) ).'</comment>' );
+        }
+        elseif( $result != 0 )
+        {
+            $output->writeln( '<error>'.$this
+                ->trans->get( 'ConfigSetFaild', $input->getOption( 'lang' ) ).'</error>' );
+
+            return 1;
+        }
+        else
+        {
+            $output->writeln( '<comment>'.$this
+                ->trans->get( 'ConfigSetSuccessfully', $input->getOption( 'lang' ) ).'</comment>' );
+        }
         return 0;
     }
 
