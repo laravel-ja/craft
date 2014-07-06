@@ -18,12 +18,12 @@ class NewCommand extends BaseCommand
 
         $this->container = Container::get();
 
-        $this->trans = $this->container->make( 'Laravel\Services\Translator' );
-        $this->validator = $this->container->make( 'Laravel\Services\Validator' );
-        $this->setupper = $this->container->make( 'Laravel\Services\FilesSetupper' );
-        $this->generator = $this->container->make( 'Laravel\Services\KeyGenerator' );
-        $this->downloader = $this->container->make( 'Laravel\Services\FileDownloader' );
-        $this->unzipper = $this->container->make( 'Laravel\Services\UnZipper' );
+        $this->trans        = $this->container->make( 'Laravel\Services\Translator' );
+        $this->validator    = $this->container->make( 'Laravel\Services\Validator' );
+        $this->setupper     = $this->container->make( 'Laravel\Services\FilesSetupper' );
+        $this->generator    = $this->container->make( 'Laravel\Services\KeyGenerator' );
+        $this->downloader   = $this->container->make( 'Laravel\Services\FileDownloader' );
+        $this->unzipper     = $this->container->make( 'Laravel\Services\UnZipper' );
         $this->configsetter = $this->container->make( 'Laravel\Services\ConfigSetter' );
     }
 
@@ -100,7 +100,7 @@ class NewCommand extends BaseCommand
         if( $result != 0 )
         {
             $output->writeln( '<error>'.$this
-                ->trans->get( 'FaildToFetch', $lang ).'</error>' );
+                ->trans->get( 'FailedToFetch', $lang ).'</error>' );
 
             return 1;
         }
@@ -111,7 +111,7 @@ class NewCommand extends BaseCommand
         if( $result != 0 )
         {
             $output->writeln( '<error>'.$this
-                ->trans->get( 'FaildToOpenZipFie', $lang ).'</error>' );
+                ->trans->get( 'FailedToOpenZipFie', $lang ).'</error>' );
 
             return 1;
         }
@@ -139,7 +139,7 @@ class NewCommand extends BaseCommand
         elseif( $result != 0 )
         {
             $output->writeln( '<error>'.$this
-                ->trans->get( 'ConfigSetFaild', $lang ).'</error>' );
+                ->trans->get( 'ConfigSetFailed', $lang ).'</error>' );
 
             return 1;
         }
