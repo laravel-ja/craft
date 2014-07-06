@@ -6,7 +6,7 @@ return array(
 
     // Validation messages
     'ProjectDirectoryExist'    => 'Application already exists!',
-    'ProjectDirectoryNotExist' => 'Application dose not exists!',
+    'ProjectDirectoryNotExist' => 'Application does not exist!',
     'DuplicateRemoveOptions'   => 'Specify only --minify or --remove-comments.',
 
     // Notice Messages
@@ -17,13 +17,13 @@ return array(
     'ComplitedInstall'      => 'Application ready! Build something amazing.',
     'Minified'              => 'Removed all comments from PHP files without vendor. Also removed md files.',
     'StartSelfUpdate'       => 'Getting phar file...',
-    'SelfUpdateComplited'   => 'Replaced to latest vesion.',
+    'SelfUpdateComplited'   => 'Updated to latest vesion.',
     'ConfigSetSuccessfully' => 'Replaced config/lang files from .laravel.install.conf.php',
-    'NoConfigSetFile'       => 'Setting file : .laravel.install.conf.php is not there. So not change configs.',
+    'NoConfigSetFile'       => 'Setting file .laravel.install.conf.php does not exist. Cannot change configs.',
 
     // Error Messages
-    'FaildToFetch'        => 'Faild to fetch ZIP file!',
-    'FaildToGenerateKey'  => 'Faild to generate new application key.',
-    'DownloadUpdataFaild' => 'Faild to download phar file.',
-    'ConfigSetFaild'      => 'Faild to replace config/lang files from .laravel.install.conf.php',
+    'FailedToFetch'        => 'Failed to fetch ZIP file!',
+    'FailedToGenerateKey'  => 'Failed to generate new application key.',
+    'DownloadUpdataFailed' => 'Failed to download phar file.',
+    'ConfigSetFailed'      => 'Failed to replace config/lang files from .laravel.install.conf.php',
 );
